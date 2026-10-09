@@ -1,50 +1,118 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Books API</title>
+  <meta name="theme-color" content="#0b1020" />
+  <meta
+    name="description"
+    content="Explore a collection of books through a live REST API."
+  />
+
+  <title>Bookshelf — Discover Your Next Read</title>
+
+  <link rel="stylesheet" href="./style.css" />
+  <script src="./script.js" defer></script>
 </head>
 
 <body>
-  <h1>Books</h1>
+  <header>
+    <nav class="navbar container" aria-label="Main navigation">
+      <div class="brand">
+        <div class="brand-icon" aria-hidden="true">▤</div>
 
-  <p id="status">Loading books...</p>
+    <div>
+      Bookshelf
+      <small>Discover something new</small>
+    </div>
+  </div>
 
-  <ul id="books"></ul>
+  <div
+    class="connection"
+    id="connection"
+    role="status"
+    aria-live="polite"
+  >
+    <span class="dot" aria-hidden="true"></span>
+    <span id="connectionText">Connecting to API...</span>
+  </div>
+</nav>
 
-  <script>
-    const status = document.getElementById("status");
-    const booksList = document.getElementById("books");
+  </header>
 
-    const loadBooks = async () => {
-      try {
-        const response = await fetch("http://localhost:5000/api/books");
+  <main class="container">
+    <section class="hero">
+      <div class="eyebrow">Your reading corner</div>
 
-        if (!response.ok) {
-          throw new Error("API request failed");
-        }
+  <h1>Every book opens <span>a new world.</span></h1>
 
-        const data = await response.json();
+  <p>
+    A simple, elegant bookshelf powered by a live REST API.
+    Explore the collection and discover your next great read.
+  </p>
 
-        status.textContent = "Books loaded successfully.";
+  <div class="stats">
+    <div class="stat">
+      <strong id="bookCount">—</strong>
+      <span>Books in collection</span>
+    </div>
 
-        data.books.forEach((book) => {
-          const li = document.createElement("li");
+    <div class="stat">
+      <strong id="apiStatus">Checking</strong>
+      <span>API availability</span>
+    </div>
+  </div>
+</section>
 
-          li.textContent = `${book.title} — ${book.author}`;
+<section aria-labelledby="collectionTitle">
+  <div class="section-heading">
+    <div>
+      <h2 id="collectionTitle">The collection</h2>
+      <p class="section-subtitle">
+        Books retrieved from our database.
+      </p>
+    </div>
 
-          booksList.appendChild(li);
-        });
-      } catch (error) {
-        console.error(error);
+    <button class="refresh-button" id="refreshButton" type="button">
+      ↻ Refresh
+    </button>
+  </div>
 
-        status.textContent =
-          "Unable to connect to the Books API. Please try again later.";
-      }
-    };
+  <div
+    class="notice"
+    id="notice"
+    role="status"
+    aria-live="polite"
+  >
+    <div class="notice-icon" aria-hidden="true">◌</div>
 
-    loadBooks();
-  </script>
+    <h3 id="noticeTitle">Loading your collection</h3>
+
+    <p id="noticeMessage">
+      Connecting to the Books API. Please wait.
+    </p>
+
+    <button
+      class="retry-button"
+      id="retryButton"
+      type="button"
+      hidden
+    >
+      Try again
+    </button>
+  </div>
+
+  <div class="book-grid" id="books" hidden></div>
+</section>
+
+  </main>
+
+  <footer>
+    <div class="footer-content container">
+      <p>Bookshelf <span>·</span> Built with HTML, CSS & JavaScript</p>
+      <p>Powered by the Books REST API</p>
+    </div>
+  </footer>
 </body>
 </html>
